@@ -6,6 +6,9 @@
 /// <reference path="../react/react.d.ts"/>
 
 declare namespace ReactSelect {
+
+    type stringOrNode = string | __React.ReactNode
+
     interface Option {
         /** Text for rendering */
         label: string;
@@ -63,12 +66,12 @@ declare namespace ReactSelect {
          * title for the "clear" control when `multi` is true
          * @default "Clear all"
          */
-        clearAllText?: string;
+        clearAllText?: stringOrNode;
         /**
          * title for the "clear" control
          * @default "Clear value"
          */
-        clearValueText?: string;
+        clearValueText?: stringOrNode;
         /**
          * delimiter to use to join multiple values
          * @default ","
@@ -145,7 +148,7 @@ declare namespace ReactSelect {
          * placeholder displayed when there are no matching search results or a falsy value to hide it
          * @default "No results found"
          */
-        noResultsText?: string;
+        noResultsText?: stringOrNode;
         onBlur?: __React.FocusEventHandler;
         /**
          * whether to clear input on blur or not
@@ -169,7 +172,7 @@ declare namespace ReactSelect {
          * field placeholder, displayed when there's no value
          * @default "Select..."
          */
-        placeholder?: string;
+        placeholder?: stringOrNode;
         /**
          * whether to enable searching feature or not
          * @default true;
@@ -199,22 +202,140 @@ declare namespace ReactSelect {
          * @default false
          */
         valueRenderer?: () => void;
+
+        // autofocus the component on mount
+        autofocus?: boolean;
+
+        // whether to enable autosizing or not
+        autosize?: boolean;
+
+        // whether escape clears the value when the menu is closed
+        escapeClearsValue?: boolean;
+
+        // whether to strip diacritics when filtering
+        ignoreAccents?: boolean;
+
+        // joins multiple values into a single form field with the delimiter (legacy mode)
+        joinValues?: boolean;
+
+        // optional style to apply to the menu container
+        menuContainerStyle?: any;
+
+        // renders a custom menu with options
+        menuRenderer?: Function;
+
+        // optional style to apply to the menu
+        menuStyle?: any;
+
+        // fires when the menu is closed
+        onClose?: Function;
+
+        // fires when the menu is scrolled to the bottom; can be used to paginate options
+        onMenuScrollToBottom?: Function;
+
+        // fires when the menu is opened
+        onOpen?: Function;
+
+        // onClick handler for value labels: function (value, event) {}
+        onValueClick?: Function;
+
+        // boolean to enable opening dropdown when focused
+        openAfterFocus?: boolean;
+
+        // additional class(es) to apply to the <Option /> elements
+        optionClassName?: string;
+
+        // option component to render in dropdown
+        optionComponent?: Function;
+
+        // applies HTML5 required attribute when needed
+        required?: boolean;
+
+        // boolean to enable the viewport to shift so that the full menu fully visible when engaged
+        scrollMenuIntoView?: boolean;
+
+        // pass the value to onChange as a simple value (legacy pre 1.0 mode), defaults to false
+        simpleValue?: boolean;
+
+        // optional style to apply to the control
+        style?: any;
+
+        // optional tab index of the control
+        tabIndex?: string;
+
+        // value component to render
+        valueComponent?: Function;
+
+        // optional style to apply to the component wrapper
+        wrapperStyle?: any;
     }
 
-    interface ReactAsyncSelectProps extends __React.Props<ReactSelect> {
+    interface ReactAsyncSelectProps extends ReactSelectProps {
+
+        /**
+         *  object to use to cache results; can be null to disable cache
+        **/
         cache?: any;
-        loadOptions?: () => void;
+
+        /**
+         *  whether to strip diacritics when filtering (shared with Select)
+        **/
         ignoreAccents?: boolean;
+
+        /**
+         *  whether to perform case-insensitive filtering (shared with Select)
+        **/
+        ignoreCase?: boolean;
+
+        /**
+         *  overrides the isLoading state when set to true
+        **/
         isLoading?: boolean;
+
+        /**
+         *  function to call to load options asynchronously
+        **/
+        loadOptions: (input: string, callback: (options: Option[]) => any) => any;
+
+        /**
+         *  replaces the placeholder while options are loading
+        **/
         loadingPlaceholder?: string;
+
+        /**
+         *  the minimum number of characters that trigger loadOptions
+        **/
+        minimumInput?: number;
+
+        /**
+         *  placeholder displayed when there are no matching search results (shared with Select)
+        **/
+        noResultsText?: string;
+
+        /**
+         *  field placeholder; displayed when there's no value (shared with Select)
+        **/
+        placeholder?: stringOrNode;
+
+        /**
+         *  label to prompt for search input
+        **/
+        searchPromptText?: string;
+
+        /**
+         *  message to display while options are loading
+        **/
+        searchingText?: string;
+    }
+
+    interface ReactSelectAsyncClass extends __React.ComponentClass<ReactAsyncSelectProps> {
     }
 
     interface ReactSelect extends  __React.ReactElement<ReactSelectProps> { }
-    interface ReactSelectAsyncClass extends __React.ComponentClass<ReactAsyncSelectProps> {
-    }
-    const Async: ReactSelectAsyncClass;
+
     interface ReactSelectClass extends __React.ComponentClass<ReactSelectProps> {
         Async: ReactSelectAsyncClass;
+        Option: Option;
     }
 
 }
